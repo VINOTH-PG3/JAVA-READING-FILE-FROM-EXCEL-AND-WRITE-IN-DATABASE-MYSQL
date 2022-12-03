@@ -7,19 +7,18 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
 import java.util.UUID;
 
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
-public class ReadExcellToDatabase {
-
-
-
-	     public static void main(String[] args) throws SQLException, IOException {
-			
+    public class ReadExcellToDatabase {
+    public static void main(String[] args) throws SQLException, IOException {
+          try {
 				//Database connection
 				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/world","root","vinothpg");
 				Statement stmt=con.createStatement();
@@ -28,35 +27,59 @@ public class ReadExcellToDatabase {
 				
 				
 	//////////////FOR RE-TRYING BY DELETING DATABASE TABLE//////////////////////////			
-	//			String sqdrop = "drop database CANDIDATES " ;   //its just given to delete database 
-	//		        stmt.executeUpdate(sqdrop);
+			//	String sqdrop = "drop database CANDIDATES " ;   //its just given to delete database 
+			//      stmt.executeUpdate(sqdrop);
 			    
-		     
-		                    //creating a new database 'CANDIDATES'
-			           String sqLcreate = "create database CANDIDATES " ;
-                                   stmt.executeUpdate(sqLcreate);
-				   System.out.println("DATABASE CREATED SUCESSFULLY");// database will be created in mysql and check sql database
+			    String sqLcreate = "create database CANDIDATES " ;
+                            stmt.executeUpdate(sqLcreate);
+		            System.out.println("DATABASE CREATED SUCESSFULLY");// database will be created in mysql and check sql database
 			    
 			    
 				
 				//create a new table in the database 'EmployeeData'
 				String sql="create table candidates.EmployeeData(E_id varchar(60) not null,employeeId varchar(60) not null, firstName varchar(40) not null,midleName varchar(40) not null,lastName varchar(40) not null,fullName varchar(40) not null,emailId varchar(40) not null,education varchar(40) not null,mobileNumber varchar(40) not null,dateOfBirth varchar(40) not null,gender varchar(40) not null,address1 varchar(40) not null,address2 varchar(40) not null,pincode varchar(40) not null,City varchar(40) not null,State varchar(40) not null,jobDesignation varchar(40) not null,jobRole varchar(40) not null,joiningdDate varchar(40)not null,Salary varchar(40)not null,perAnnum varchar(40) not null )";
-	                         stmt.execute(sql);
-	                         System.out.println("EmployeeData Table created Sucessfully in Database ");
-	                         System.out.println();
+	                        stmt.execute(sql);
+	                        System.out.println("EmployeeData Table created Sucessfully in Database ");
+	                        System.out.println();
 	                                                                              		                                                                 			                                                             	        		                                                                                            			                                                                                                    			                                                                                       	 	     	 		 
 				//Excel
-	                     System.out.println("Rading a file from excelSheet and printing....");
-	                     System.out.println();
+	                   System.out.println("Rading a file from excelSheet and printing....");
+	                   System.out.println();
+
 				FileInputStream ReadExcel=new FileInputStream("C:\\Users\\Vinoth07\\Downloads\\empsheet.xlsx");//its used for file reading 
 				XSSFWorkbook workbook=new XSSFWorkbook(ReadExcel);
-				XSSFSheet sheet=workbook.getSheet("EmpData2");
+				XSSFSheet ExlSheet = workbook.getSheetAt(1);
+				Iterator<org.apache.poi.ss.usermodel.Row> RowIter = ExlSheet.rowIterator();
 				
-				int rows=sheet.getLastRowNum();
+				System.out.println("Read the Excel document datas :");
+				System.out.println("");
+				while (RowIter.hasNext())
+
+				{
+
+					XSSFRow row = (XSSFRow) RowIter.next();
+					Iterator<org.apache.poi.ss.usermodel.Cell> CellItrer = row.cellIterator();
+					while (CellItrer.hasNext()) {
+						XSSFCell cell = (XSSFCell) CellItrer.next();
+
+						System.out.print(cell.toString() + "  ");
+					}
+					System.out.println("");
+
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				int rows=ExlSheet.getLastRowNum();
 				
 				for(int r=1;r<=rows;r++)
 				{
-					XSSFRow row=sheet.getRow(r);
+					XSSFRow row=ExlSheet.getRow(r);
 			         
 					 UUID Gendrate = UUID.randomUUID();
 				
@@ -87,8 +110,8 @@ public class ReadExcellToDatabase {
 				     String perAnnum = row.getCell(20).getStringCellValue();
 				    
 				    
-				 	 	     	 		 
-				     System.out.println(E_id+" "+employeeId+" "+firstName+" "+midleName+" "+lastName+" "+fullName+" "+emailId+" "+education+" "+mobileNumber+" "+dateOfBirth+" "+gender+" "+address1+" "+address2+" "+pincode+" "+City+" "+State+" "+jobDesignation+" "+ jobRole+" "+joiningdDate+" "+Salary+" "+perAnnum );
+				 	 	// For Reading file without Itreater    	 		 
+				    // System.out.println(E_id+" "+employeeId+" "+firstName+" "+midleName+" "+lastName+" "+fullName+" "+emailId+" "+education+" "+mobileNumber+" "+dateOfBirth+" "+gender+" "+address1+" "+address2+" "+pincode+" "+City+" "+State+" "+jobDesignation+" "+ jobRole+" "+joiningdDate+" "+Salary+" "+perAnnum );
 				     
 				    
 				     
@@ -110,6 +133,9 @@ public class ReadExcellToDatabase {
 				System.out.println();
 				System.out.println("EXCELL DATA UPDATED TO DATABASE");
 				
+          }catch (Exception e) {
+        	  e.printStackTrace();
+          }
 			}
 
 		}
