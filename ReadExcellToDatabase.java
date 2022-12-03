@@ -29,23 +29,25 @@ public class ReadExcellToDatabase {
 				
 	//////////////FOR RE-TRYING BY DELETING DATABASE TABLE//////////////////////////			
 	//			String sqdrop = "drop database CANDIDATES " ;   //its just given to delete database 
-	//		    stmt.executeUpdate(sqdrop);
+	//		        stmt.executeUpdate(sqdrop);
 			    
-			    String sqLcreate = "create database CANDIDATES " ;
-                stmt.executeUpdate(sqLcreate);
-				  System.out.println("DATABASE CREATED SUCESSFULLY");// database will be created in mysql and check sql database
+		     
+		                    //creating a new database 'CANDIDATES'
+			           String sqLcreate = "create database CANDIDATES " ;
+                                   stmt.executeUpdate(sqLcreate);
+				   System.out.println("DATABASE CREATED SUCESSFULLY");// database will be created in mysql and check sql database
 			    
 			    
 				
 				//create a new table in the database 'EmployeeData'
 				String sql="create table candidates.EmployeeData(E_id varchar(60) not null,employeeId varchar(60) not null, firstName varchar(40) not null,midleName varchar(40) not null,lastName varchar(40) not null,fullName varchar(40) not null,emailId varchar(40) not null,education varchar(40) not null,mobileNumber varchar(40) not null,dateOfBirth varchar(40) not null,gender varchar(40) not null,address1 varchar(40) not null,address2 varchar(40) not null,pincode varchar(40) not null,City varchar(40) not null,State varchar(40) not null,jobDesignation varchar(40) not null,jobRole varchar(40) not null,joiningdDate varchar(40)not null,Salary varchar(40)not null,perAnnum varchar(40) not null )";
-	            stmt.execute(sql);
-	            System.out.println("EmployeeData Table created Sucessfully in Database ");
-	            System.out.println();
+	                         stmt.execute(sql);
+	                         System.out.println("EmployeeData Table created Sucessfully in Database ");
+	                         System.out.println();
 	                                                                              		                                                                 			                                                             	        		                                                                                            			                                                                                                    			                                                                                       	 	     	 		 
 				//Excel
-	            System.out.println("Rading a file from excelSheet and printing....");
-	            System.out.println();
+	                     System.out.println("Rading a file from excelSheet and printing....");
+	                     System.out.println();
 				FileInputStream ReadExcel=new FileInputStream("C:\\Users\\Vinoth07\\Downloads\\empsheet.xlsx");//its used for file reading 
 				XSSFWorkbook workbook=new XSSFWorkbook(ReadExcel);
 				XSSFSheet sheet=workbook.getSheet("EmpData2");
